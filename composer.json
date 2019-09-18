@@ -1,0 +1,24 @@
+{
+  "name": "twinkle/apollo-client",
+  "description": "apollo 客户端",
+  "type": "library",
+  "license": "MIT",
+  "support": {
+    "email": "xiehuanjin@globalegrow.com"
+  },
+  "autoload": {
+    "psr-4": {
+      "twinkle\\apollo\\": "src/"
+    }
+  },
+  "require": {
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7"
+  },
+  "bin": [
+    "bin/apollo"
+  ]
+}

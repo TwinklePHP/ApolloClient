@@ -1,0 +1,64 @@
+#!usr/bin/env php
+<?php
+
+// example: /usr/bin/php /path/to/apollo.php --application=appId --namespace=application --configDir=/data/wwwroot/application
+
+use twinkle\apollo\Client;
+
+ini_set('memory_limit', '512M');
+set_time_limit(0);
+
+foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../../vendor/autoload.php', __DIR__ . '/../vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        define('APOLLO_COMPOSER_INSTALL', $file);
+        break;
+    }
+}
+
+if (!defined('APOLLO_COMPOSER_INSTALL')) {
+    echo '请使用 composer 方式安装';
+    exit(0);
+}
+
+require APOLLO_COMPOSER_INSTALL;
+
+//指定Apollo的服务地址
+$server = empty(getenv('APOLLO_SERVER')) ? (defined('APOLLO_SERVER') ? APOLLO_SERVER : '') : getenv('APOLLO_SERVER');
+if (empty($server)) {
+    echo '请指定Apollo的服务地址';
+    exit(0);
+}
+
+$opts = getopt('a:n:c:', ['application:', 'namespace:', 'configDir']);
+
+//指定appId
+$appId = !empty($opts['a']) ? $opts['a'] : (!empty($opts['application']) ? $opts['application'] : '');
+if (empty($appId)) {
+    echo 'appId必须指定';
+    exit(0);
+}
+
+//指定要拉取哪些namespace的配置
+$namespaces = !empty($opts['n']) ? $opts['n'] : (!empty($opts['namespace']) ? $opts['namespace'] : 'application');
+$namespaces = explode(',', $namespaces);
+
+$apollo = new Client($server, $appId, $namespaces);
+
+$clientIp = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
+$apollo->setClientIp($clientIp);
+
+$configDir = !empty($opts['c']) ? $opts['c'] : (!empty($opts['configDir']) ? $opts['configDir'] : getenv('APOLLO_CONF_DIR'));
+if (!empty($configDir)) {
+    $apollo->setSaveDir($configDir);
+}
+
+if ($clientIp) {
+    echo "serverIp [$clientIp]\n";
+}
+$pid = getmypid();
+echo "start [$pid]\n";
+$restart = false; //失败自动重启
+do {
+    $error = $apollo->start(); //此处传入回调
+    if ($error) echo('error:' . $error . "\n");
+} while ($error && $restart);

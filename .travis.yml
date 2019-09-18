@@ -1,0 +1,18 @@
+language: php
+php:
+  - '7.2'
+
+# 项目所在分支
+branches:
+  only:
+  - master
+
+install:
+  - composer install --prefer-dist --optimize-autoloader --quiet
+
+script:
+  #- php bin/apollo.php --application=$APP_ID --namespace=$APPLICATION &
+  - ./vendor/bin/phpunit --version
+  - ./vendor/bin/phpunit --coverage-clover=coverage.clover
+
+
