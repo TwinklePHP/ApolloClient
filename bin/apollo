@@ -44,6 +44,11 @@ $namespaces = explode(',', $namespaces);
 
 $apollo = new Client($server, $appId, $namespaces);
 
+$cluster = empty(getenv('APOLLO_CLUSTER')) ? (defined('APOLLO_CLUSTER') ? APOLLO_CLUSTER : '') : getenv('APOLLO_CLUSTER');
+if(!empty($cluster)) {
+    $apollo->setCluster($cluster);
+}
+
 $clientIp = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
 $apollo->setClientIp($clientIp);
 
