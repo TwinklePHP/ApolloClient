@@ -45,6 +45,7 @@ class Config implements \ArrayAccess
             if (file_exists($this->configFile)) {
                 $this->values = parse_ini_file($this->configFile);
             }
+            $this->loadConfig = true;
         }
         return $this;
     }
