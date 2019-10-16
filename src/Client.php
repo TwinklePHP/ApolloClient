@@ -121,7 +121,7 @@ class Client
         foreach ($namespaceNames as $namespaceName) {
             $request = [];
 
-            $config = (new Config($this->saveDir))->setNamespace($namespaceName);
+            $config = new Config($this->saveDir,$this->appId,$namespaceName);
 
             $requestUrl = $url . $namespaceName;
             $params['releaseKey'] = $config->get('apolloReleaseKey', '');

@@ -7,6 +7,8 @@ use Exception;
 
 class Config implements \ArrayAccess
 {
+    protected $appId;
+
     protected $configDir = '';
 
     protected $configFile = '';
@@ -20,9 +22,11 @@ class Config implements \ArrayAccess
 
     protected $loadConfig = false;
 
-    public function __construct($configDir)
+    public function __construct($configDir, $appId = 'apolloConfig', $namespace = 'application')
     {
         $this->configDir = $configDir;
+        $this->appId = $appId;
+        $this->setNamespace($namespace);
     }
 
     /**
@@ -52,7 +56,7 @@ class Config implements \ArrayAccess
 
     public function getConfigFile()
     {
-        $this->configFile = $this->configDir . DIRECTORY_SEPARATOR . "apolloConfig.{$this->namespace}.ini";
+        $this->configFile = $this->configDir . DIRECTORY_SEPARATOR . "{$this->appId}.{$this->namespace}.ini";
         return $this->configFile;
     }
 
