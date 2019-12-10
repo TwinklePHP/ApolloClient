@@ -152,11 +152,10 @@ class OpenApi
      */
     public function updateItems($data, $namespaceName)
     {
-        if (empty($data['key']) || empty($data['value']) || empty($data['dataChangeCreatedBy'])) {
+        if (empty($data['key']) || empty($data['value']) || empty($data['dataChangeLastModifiedBy'])) {
             throw new Exception('请求不合法，必要参数为空');
         }
-
-        $data = $this->request->post("envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/items/{$data['key']}", $data);
+        $data = $this->request->request('PUT', "envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/items/{$data['key']}", $data);
         return $this->checkData($data);
     }
 
