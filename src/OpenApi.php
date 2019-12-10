@@ -14,7 +14,7 @@ class OpenApi
     protected $token;
     protected $configServer; //apollo服务端地址
     protected $appId; //apollo配置项目的appid
-    protected $env;
+    protected $env = 'dev';
     protected $clusterName = 'default';
 
     protected $request;
@@ -32,19 +32,23 @@ class OpenApi
     }
 
     /**
-     * @param string $env
+     * @param $env
+     * @return $this
      */
     public function setEnv($env)
     {
         $this->env = $env;
+        return $this;
     }
 
     /**
-     * @param string $clusterName
+     * @param $clusterName
+     * @return $this
      */
     public function setClusterName($clusterName)
     {
         $this->clusterName = $clusterName;
+        return $this;
     }
 
     /**
