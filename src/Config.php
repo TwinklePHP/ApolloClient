@@ -5,7 +5,7 @@ namespace twinkle\apollo;
 
 use Exception;
 
-class Config implements \ArrayAccess
+class Config implements \ArrayAccess,\Iterator
 {
     protected $appId;
 
@@ -103,5 +103,35 @@ class Config implements \ArrayAccess
     public function offsetUnset($offset)
     {
         throw new Exception('不允许变更');
+    }
+
+    public function current()
+    {
+        $this->loadConfig();
+        return current($this->values);
+    }
+
+    public function next()
+    {
+        $this->loadConfig();
+        return next($this->values);
+    }
+
+    public function key()
+    {
+        $this->loadConfig();
+        return key($this->values);
+    }
+
+    public function valid()
+    {
+        $this->loadConfig();
+        return key($this->values) !== null;
+    }
+
+    public function rewind()
+    {
+        $this->loadConfig();
+        return reset($this->values);
     }
 }
