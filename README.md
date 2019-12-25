@@ -17,12 +17,17 @@ git clone --branch ${latest tag} https://github.com/TwinklePHP/ApolloClient.git
 
 ## 客户端
 ```shell script
-/usr/bin/php ${DIR}/vendor/bin/apollo.php --application=appId --namespace=application
+vendor/bin/apollo --application=appId --namespace=application
+
+或
+
+/usr/bin/php ${DIR}/vendor/twinkle/apollo-client/bin/apollo --application=appId --namespace=application
+
 ```
 
 ## 获取配置
 
 ```php
-$config = (new Config($configDir))->setNamespace('application')->loadConfig();
+$config = new \twinkle\apollo\ConfigConfig($configDir, $appName, $application);
 $dbHost = $config['DB_HOST'];
 ```
