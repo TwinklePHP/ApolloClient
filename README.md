@@ -28,6 +28,6 @@ vendor/bin/apollo --application=appId --namespace=application
 ## 获取配置
 
 ```php
-$config = new \twinkle\apollo\ConfigConfig($configDir, $appName, $application);
+$config = new \twinkle\apollo\Config($configDir, $appName, $application);
 $dbHost = $config['DB_HOST'];
 ```
