@@ -208,14 +208,14 @@ class OpenApi
      */
     private function checkData($data)
     {
-        $data['data'] = json_decode($data['data'],true);
+        $data['data'] = json_decode($data['data'], true);
 
         if (200 <> $data['httpCode']) {
             $msg = $data['error_msg'];
-            if (!empty($data['data']) && isset($data['data']['message'])) {
+            if (!empty($data['data']) && !empty($data['data']['message'])) {
                 $msg = $data['data']['message'];
             }
-            throw new Exception($msg);
+            throw new Exception($msg, $data['httpCode']);
         }
 
         return $data['data'];
