@@ -79,7 +79,8 @@ class OpenApi
      * @return array | false
      * @throws Exception
      */
-    public function getNamespace($namespaceName) {
+    public function getNamespace($namespaceName)
+    {
         $data = $this->request->get("envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}");
         return $this->checkData($data);
     }
@@ -166,13 +167,14 @@ class OpenApi
     /**
      * 删除配置接口
      * @param string $key 配置的key。非properties格式，key固定为content
-     * @param string $operator
+     * @param string $operator 删除配置的操作者，域账号
      * @param string $namespaceName
      * @return bool
      * @throws Exception
      */
-    public function deleteItems($key,$operator, $namespaceName) {
-        $data = $this->request->request('DELETE',"envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/items/{$key}?operator={$operator}");
+    public function deleteItems($key, $operator, $namespaceName)
+    {
+        $data = $this->request->request('DELETE', "envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/items/{$key}?operator={$operator}");
         return $this->checkData($data);
     }
 
@@ -183,12 +185,24 @@ class OpenApi
      * @return bool
      * @throws Exception
      */
-    public function releases($data,$namespaceName) {
+    public function releases($data, $namespaceName)
+    {
 
-        $data = $this->request->post("envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/releases",$data);
+        $data = $this->request->post("envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/releases", $data);
         return $this->checkData($data);
     }
 
+    /**
+     * 该方法已废弃，后续版本将删除
+     * @param $namespaceName
+     * @return array|bool
+     * @throws Exception
+     * @deprecated
+     */
+    public function getLaReleases($namespaceName)
+    {
+        return $this->getLatestReleases($namespaceName);
+    }
 
     /**
      * 获取某个Namespace当前生效的已发布配置接口
@@ -196,7 +210,8 @@ class OpenApi
      * @return array | bool
      * @throws Exception
      */
-    public function getLaReleases($namespaceName) {
+    public function getLatestReleases($namespaceName)
+    {
         $data = $this->request->get("envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/releases/latest");
         return $this->checkData($data);
     }
