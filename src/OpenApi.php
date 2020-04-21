@@ -140,7 +140,7 @@ class OpenApi
      */
     public function addItems($data, $namespaceName)
     {
-        if (empty($data['key']) || empty($data['value']) || empty($data['dataChangeCreatedBy'])) {
+        if (empty($data['key']) || isset($data['value']) || empty($data['dataChangeCreatedBy'])) {
             throw new Exception('请求不合法，必要参数为空');
         }
 
@@ -152,15 +152,18 @@ class OpenApi
      * 修改配置接口
      * @param $data
      * @param $namespaceName
+     * @param $createIfNotExists
      * @return bool
      * @throws Exception
      */
-    public function updateItems($data, $namespaceName)
+    public function updateItems($data, $namespaceName, $createIfNotExists = false)
     {
-        if (empty($data['key']) || empty($data['value']) || empty($data['dataChangeLastModifiedBy'])) {
+        if (empty($data['key']) || !isset($data['value']) || empty($data['dataChangeLastModifiedBy'])) {
             throw new Exception('请求不合法，必要参数为空');
         }
-        $data = $this->request->request('PUT', "envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/items/{$data['key']}", $data);
+        $url = "envs/{$this->env}/apps/{$this->appId}/clusters/{$this->clusterName}/namespaces/{$namespaceName}/items/{$data['key']}";
+        $createIfNotExists && $url .= "?createIfNotExists=true";
+        $data = $this->request->request('PUT', $url, $data);
         return $this->checkData($data);
     }
 
