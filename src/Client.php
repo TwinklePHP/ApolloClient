@@ -211,7 +211,7 @@ class Client
                 $this->log('info', "获取到配置变更", $changeList);
                 $responseList = $this->pullConfigBatch(array_keys($changeList));
                 foreach ($responseList as $namespaceName => $result) {
-                    $result && ($this->notifications[$namespaceName]['notificationId'] = $responseList[$namespaceName]);
+                    $result && ($this->notifications[$namespaceName]['notificationId'] = $changeList[$namespaceName]);
                 }
                 //如果定义了配置变更的回调，比如重新整合配置，则执行回调
                 ($callback instanceof \Closure) && call_user_func($callback);
