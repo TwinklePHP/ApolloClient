@@ -193,9 +193,12 @@ class Client
         $params = [];
         $params['appId'] = $this->appId;
         $params['cluster'] = $this->cluster;
-        $params['notifications'] = json_encode(array_values($this->notifications));
-        $query = http_build_query($params);
+        
         do {
+
+            $params['notifications'] = json_encode(array_values($this->notifications));
+            $query = http_build_query($params);
+			
             curl_setopt($ch, CURLOPT_URL, $url . $query);
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
