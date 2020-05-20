@@ -222,21 +222,21 @@ class OpenApi
 
     /**
      * @param $data
-     * @return bool
+     * @return bool | array
      * @throws Exception
      */
     private function checkData($data)
     {
-        $data['data'] = json_decode($data['data'], true);
-
         if (200 <> $data['httpCode']) {
             $msg = $data['error_msg'];
             if (!empty($data['data']) && !empty($data['data']['message'])) {
                 $msg = $data['data']['message'];
             }
             throw new Exception($msg, $data['httpCode']);
+        } elseif (!empty($data['data'])) {
+            return json_decode($data['data'], true);
         }
 
-        return $data['data'];
+        return true;
     }
 }
