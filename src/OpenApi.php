@@ -132,15 +132,16 @@ class OpenApi
     }
 
     /**
-     * 新增配置接口
+     * 新增配置接口,建议使用 updateItems 接口替代
      * @param array $data
      * @param string $namespaceName
      * @return bool
      * @throws Exception
+	 * @deprecated
      */
     public function addItems($data, $namespaceName)
     {
-        if (empty($data['key']) || isset($data['value']) || empty($data['dataChangeCreatedBy'])) {
+        if (empty($data['key']) || !isset($data['value']) || empty($data['dataChangeCreatedBy'])) {
             throw new Exception('请求不合法，必要参数为空');
         }
 
@@ -152,7 +153,7 @@ class OpenApi
      * 修改配置接口
      * @param $data
      * @param $namespaceName
-     * @param $createIfNotExists
+     * @param bool $createIfNotExists 配置不存在是否创建
      * @return bool
      * @throws Exception
      */
